@@ -7,6 +7,7 @@
 #include <QList>
 #include <QAction>
 #include <QDialog>
+#include <QDebug>
 #include <QPainter>
 #include <QPalette>
 #include <QMouseEvent>

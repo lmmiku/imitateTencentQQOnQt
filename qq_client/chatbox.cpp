@@ -16,8 +16,6 @@ chatbox::chatbox(user_data *userdata,udp* udp_socket,QString account,QString fri
     //显示所有聊天记录
     view_chatHistory(userdata,account,friend_account);
 
-    ui->widget->setLayout(layout);
-
     //关闭按钮功能
     connect(ui->btn_close,&QPushButton::clicked,this,[=](){
         this->close();
@@ -37,7 +35,7 @@ chatbox::chatbox(user_data *userdata,udp* udp_socket,QString account,QString fri
     connect(ui->btn_send,&QPushButton::clicked,[=](){
         QString str = ui->textEdit_2->toPlainText();
         QString send_data ="发送消息："+str;
-        //ui->textEdit->append(send_data);
+        ui->textEdit->append(send_data);
         udp_socket->udp_send(account,friend_account,str);
         ui->textEdit_2->clear();
     });
@@ -46,24 +44,23 @@ chatbox::chatbox(user_data *userdata,udp* udp_socket,QString account,QString fri
     connect(udp_socket,&udp::rece_data,this,[=](){
         qDebug()<<"收到消息";
         QString rece_str = udp_socket->udp_rece();
-        //ui->textEdit->append("收到消息: "+rece_str);
+        ui->textEdit->append("收到消息: "+rece_str);
     });
 }
 
 //显示所有聊天记录
 void chatbox::view_chatHistory(user_data *userdata,QString account,QString friend_account){
-    QList<QPair<QString,QString>> L = userdata->get_ALLChat(account,friend_account);
-    layout = new QVBoxLayout(ui->widget);
+    QList<QPair<QString,QString>> L = userdata->get_ALLChat(account,friend_account);chat_bubble * chat;
     for(auto s:L){
-        chat_bubble * chat;
+
         if(s.first == account){
-            //ui->textEdit->append("发送消息: "+s.second);
-            chat = new chat_bubble(userdata->get_headPath(account),s.second);
-            layout->addWidget(chat,0,Qt::AlignRight);
+            ui->textEdit->append("发送消息: "+s.second);
+            //chat = new chat_bubble(userdata->get_headPath(account),s.second);
+            //layout->addWidget(chat);
         }else{
-            //ui->textEdit->append("收到消息: "+s.second);
-            chat = new chat_bubble(userdata->get_headPath(friend_account),s.second);
-            layout->addWidget(chat,0,Qt::AlignLeft);
+            ui->textEdit->append("收到消息: "+s.second);
+            //chat = new chat_bubble(userdata->get_headPath(friend_account),s.second);
+            //layout->addWidget(chat);
         }
     }
 }

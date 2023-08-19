@@ -244,16 +244,6 @@ QWidget#widget_2{
     <string/>
    </property>
   </widget>
-  <widget class="QWidget" name="widget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>40</y>
-     <width>821</width>
-     <height>441</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QWidget" name="widget_2" native="true">
    <property name="geometry">
     <rect>
@@ -307,6 +297,16 @@ QWidget#widget_2{
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
+  </widget>
+  <widget class="QTextEdit" name="textEdit">
+   <property name="geometry">
+    <rect>
+     <x>3</x>
+     <y>40</y>
+     <width>821</width>
+     <height>441</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <resources>
