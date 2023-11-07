@@ -8,7 +8,8 @@ chatbox::chatbox(QWidget *parent) :
 
 }
 
-chatbox::chatbox(user_data *userdata,udp* udp_socket,QString account,QString friend_account):ui(new Ui::chatbox){
+chatbox::chatbox(user_data *userdata,udp* udp_socket,Tcp*tcp_socket,QString account,QString friend_account):ui(new Ui::chatbox){
+
     ui->setupUi(this);
     //去掉边框
     this->setWindowFlags(Qt::WindowType::FramelessWindowHint);
@@ -46,6 +47,43 @@ chatbox::chatbox(user_data *userdata,udp* udp_socket,QString account,QString fri
         QString rece_str = udp_socket->udp_rece();
         ui->textEdit->append("收到消息: "+rece_str);
     });
+
+    //发送文件
+    connect(ui->btn_folder,&QPushButton::clicked,this,[=](){
+        qDebug()<<"点击了文件选择按钮";
+        QStringList stringList = QFileDialog::getOpenFileNames(nullptr,"选择文件","");
+        for(auto s:stringList){
+            qDebug()<<s<<"  ";
+        }
+        if(!stringList.empty()){
+            QFile file(stringList[0]);
+            QFileInfo fileInfo(stringList[0]);
+            QString file_name = fileInfo.fileName();
+            int file_size = fileInfo.size();
+            qDebug()<<"打开文件名称："<<file_name;
+            qDebug()<<"打开文件大小："<<file_size;
+//            QByteArray byte;
+//            if(file.open(QIODevice::ReadOnly)){
+//                byte = file.readAll();
+//            }
+//            QFile new_file("C:/Users/shocker/QT practise/build-qq-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/new_file.txt");
+//            if(new_file.open(QIODevice::WriteOnly)){
+//                new_file.write(byte);
+//            }
+            QByteArray byte;
+            QByteArray File_head = QString("%1;%2").arg(file_name).arg(file_size).toUtf8();
+            tcp_socket->tcp_write(File_head);
+            tcp_socket->tcp_write(byte);
+
+        }
+    });
+
+    connect(tcp_socket,&Tcp::read_data,this,[=](){
+        QByteArray byte = tcp_socket->tcp_read();
+        QString current_path = QCoreApplication::applicationDirPath();
+
+    });
+
 }
 
 //显示所有聊天记录

@@ -73,6 +73,11 @@ QWidget#widget{
 }
 QWidget#widget_2{
  background-color:  rgb(240,240,240); border-top-color: gray; border-bottom-color: gray; border-left-color: transparent; border-right-color: transparent;border-width:10px
+}
+QPushButton#btn_folder{
+	border:none;
+	
+	image: url(:/res/folder.png);
 }</string>
   </property>
   <widget class="QTextEdit" name="textEdit_2">
@@ -275,10 +280,10 @@ QWidget#widget_2{
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label_folder">
+   <widget class="QPushButton" name="btn_folder">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>50</x>
       <y>5</y>
       <width>31</width>
       <height>31</height>
@@ -286,15 +291,6 @@ QWidget#widget_2{
     </property>
     <property name="text">
      <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="res.qrc">:/res/folder.png</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
   </widget>

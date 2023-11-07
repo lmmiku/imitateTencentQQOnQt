@@ -66,5 +66,6 @@
         <file>res/delete_chat.png</file>
         <file>res/delete_chatHistory.png</file>
         <file>res/add_chat.png</file>
+        <file>res/background2.png</file>
     </qresource>
 </RCC>

@@ -5,6 +5,8 @@
 #include <QString>
 #include <QMouseEvent>
 #include <QMenu>
+#include <QPainter>
+#include <QBitmap>
 #include <QAction>
 namespace Ui {
 class chat_button;

@@ -14,6 +14,7 @@ SOURCES += \
     friend_button.cpp \
     main.cpp \
     mainwidget.cpp \
+    rsa.cpp \
     tcp.cpp \
     udp.cpp \
     user_data.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     chat_button.h \
     friend_button.h \
     mainwidget.h \
+    rsa.h \
     tcp.h \
     udp.h \
     user_data.h \

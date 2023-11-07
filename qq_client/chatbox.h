@@ -17,6 +17,9 @@
 #include <QGridLayout>
 #include <QColorDialog>
 #include <QGraphicsEffect>
+#include <QFileDialog>
+#include <QCoreApplication>
+#include <QFile>
 #include "user_data.h"
 #include "tcp.h"
 #include "udp.h"
@@ -33,7 +36,7 @@ class chatbox : public QWidget
 
 public:
     explicit chatbox(QWidget *parent = nullptr);
-    chatbox(user_data *userdata,udp*udp_socket,QString account,QString friend_account);
+    chatbox(user_data *userdata,udp*udp_socket,Tcp*tcp_socket,QString account,QString friend_account);
 
     ~chatbox();
     //窗口拖动

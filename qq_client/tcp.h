@@ -15,14 +15,15 @@ class Tcp : public QWidget
 public:
     explicit Tcp(QWidget *parent = nullptr);
 
-    //读与写接口
-    int tcp_write(QString data);
-    QString tcp_read();
+    //发送文件
+    int tcp_write(QByteArray data);
+
+    QByteArray tcp_read();
     //断开连接
     void tcp_disconnect();
     //连接服务器
     void tcp_connect(QString account);
-    QTcpSocket *client = nullptr;
+    QTcpSocket *tcp_socket = nullptr;
     //服务器连接状态
     bool state = false;
     // 服务器IP地址

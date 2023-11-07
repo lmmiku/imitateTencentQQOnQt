@@ -26,7 +26,7 @@ void udp::udp_send(QString account ,QString friend_account,QString message){
     //将json转为QByteArray
     QJsonDocument json_document(json);
     QByteArray jsonData = json_document.toJson();
-    qDebug()<<QString::fromUtf8(jsonData);
+    //qDebug()<<QString::fromUtf8(jsonData);
     udp_socket->writeDatagram(jsonData,QHostAddress(server_ip),server_port);
     emit send_data();
 }
@@ -35,7 +35,7 @@ QString udp::udp_rece(){
     QByteArray datagram;
     datagram.resize(udp_socket->pendingDatagramSize());
     udp_socket->readDatagram(datagram.data(),datagram.size());
-    qDebug()<<QString::fromUtf8(datagram);
+    //qDebug()<<QString::fromUtf8(datagram);
     return QString::fromUtf8(datagram);
 }
 

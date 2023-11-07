@@ -8,7 +8,10 @@ mainWidget::mainWidget(QWidget *parent) :
 
 mainWidget::mainWidget(user_data* userdata,QString account):ui(new Ui::mainWidget){
 
+
+
     ui->setupUi(this);this->setAttribute(Qt::WA_NoChildEventsForParent);
+
     //去掉边框
     this->setWindowFlags(Qt::WindowType::FramelessWindowHint);
 
@@ -19,22 +22,33 @@ mainWidget::mainWidget(user_data* userdata,QString account):ui(new Ui::mainWidge
     //设置QTabWidget的内部空间背景变为白色（QTabWidget::pane:!selected 无法使用，只能通过每次切换来重新设置样式表）
     ui->widget_7->setStyleSheet("border: none;background-color: white;");
     ui->toolBox_Person->setStyleSheet("border: none;background-color: white;");
-    ui->toolBox->setStyleSheet("border: none; background-color: white;");
+    ui->toolBox_Person->setStyleSheet("border: none; background-color: white;");
     connect(ui->tabWidget, &QTabWidget::currentChanged, this,[=](int index){
         if(index == 0){
             ui->widget_7->setStyleSheet("border: none;background-color: white;");
         }else if(index == 1){
             ui->toolBox_Person->setStyleSheet("border: none;background-color: white;");
         }else if(index == 2){
-            ui->toolBox->setStyleSheet("border: none; background-color: white;");
+            ui->toolBox_Person->setStyleSheet("border: none; background-color: white;");
         }
     });
 
     ui->label_top->lower();
 
-    //为头像控件安装事件过滤器，以达到改变头像的需求
-    ui->label_head->setMask(QRegion(ui->label_head->rect(),QRegion::RegionType::Ellipse));
+    //为头像控件安装事件过滤器，实现改变头像的功能
     ui->label_head->installEventFilter(this);
+    //将头像设置为圆形
+    QBitmap mask(ui->label_head->size());
+    mask.fill(Qt::color0);
+    QPainter painter(&mask);
+    painter.setRenderHint(QPainter::Antialiasing, true);  // 启用抗锯齿
+    painter.setBrush(Qt::color1);
+    painter.setPen(Qt::NoPen);
+    painter.drawEllipse(mask.rect());
+    painter.end();
+    ui->label_head->setMask(mask);
+
+    //设置边距
     ui->tabWidget->setContentsMargins(0, 0, 0, 0);
 
     //消息界面的布局
@@ -60,7 +74,6 @@ mainWidget::mainWidget(user_data* userdata,QString account):ui(new Ui::mainWidge
     }
     ui->label_head->setPixmap(QPixmap(pixmap));
     connect(this, &mainWidget::changedHead,this, [=]() {
-        qDebug() << "label_head 被点击了";
         QString currentPath = QCoreApplication::applicationDirPath();
         QString filePath = QFileDialog::getOpenFileName(nullptr,"选择文件",currentPath,"All Files (*.png)");
         if(filePath != ""){
@@ -78,8 +91,6 @@ mainWidget::mainWidget(user_data* userdata,QString account):ui(new Ui::mainWidge
     QTimer *timer = new QTimer(this);
     timer->setInterval(20000);
     connect(timer,&QTimer::timeout,this,[=](){
-        qDebug()<<"-------"<<tcp_socket->state<<"-----";
-        qDebug()<<"定时器触发";
         if(tcp_socket->state == false){
             tcp_socket->tcp_connect(account);
         }
@@ -116,8 +127,11 @@ mainWidget::mainWidget(user_data* userdata,QString account):ui(new Ui::mainWidge
     //关闭按钮功能
     connect(ui->btn_close,&QPushButton::clicked,this,[=](){
         tcp_socket->tcp_disconnect();
-        this->close();
-
+        emit exitApplixation();
+        this->animation_out(this);
+        QTimer::singleShot(400,this,[=](){
+            this->close();
+        });
     });
 
     //更多按钮功能
@@ -133,18 +147,23 @@ mainWidget::mainWidget(user_data* userdata,QString account):ui(new Ui::mainWidge
     connect(btn_action1,&QAction::triggered,this,[=](){
         userdata->updata_user(account,"离线");
         //tcp_socket->disconnect();
-        emit back_widget();
-        this->close();
-        //停止计时器，不能使用deleteLater()来释放所有资源，程序会崩溃，原因未知
         timer->stop();
-        this->deleteLater();
+        this->animation_out(this);
+        emit back_widget();
+        QTimer::singleShot(400,this,[=](){
+            this->close();
+        });
+
     });
     connect(btn_action2,&QAction::triggered,this,[=](){
         QMessageBox::StandardButton ret_button = QMessageBox::information(this,"注销","你确定要注销账号吗？",QMessageBox::Yes|QMessageBox::Cancel,QMessageBox::Cancel);
         if(ret_button == QMessageBox::Yes){
             userdata->delete_user(account);
             emit deleteUser();
-            this->close();
+            this->animation_out(this);
+            QTimer::singleShot(400,this,[=](){
+                this->close();
+            });
         }
     });
     ui->btn_more->setMenu(btn_menu);
@@ -160,16 +179,21 @@ mainWidget::mainWidget(user_data* userdata,QString account):ui(new Ui::mainWidge
 
     //初始化已有聊天记录
     init_chat(userdata,account);
+
+    //边框阴影，运行时崩溃
+//    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
+//    shadow->setOffset(0,0);
+//    shadow->setColor(QColor("#444444"));
+//    ui->widget->setGraphicsEffect(shadow);
+//    this->setContentsMargins(1,1,1,1);
 }
 
 //实现添加联系人功能
 bool mainWidget::add_friend(user_data *userdata,QString account , QString friend_account,int currentIndex){
     if(!userdata->find_account(friend_account)||account==friend_account){
-        qDebug()<<"联系人不存在";
         return false;
     }
     if(!(userdata->find_friend_account(account,friend_account).isEmpty())&&currentIndex == -1){
-        qDebug()<<"联系人已添加";
         return false;
     }
     //获取当前页面索引(如果currentIndex==-1) 用于初始化与添加联系人
@@ -213,24 +237,28 @@ bool mainWidget::add_friend(user_data *userdata,QString account , QString friend
     });
     //设置联系人按钮双击事件
     connect(button,&friend_button::mouseDoubleDlick,this,[=](){
-        chatbox *chat = new chatbox(userdata,udp_socket,account,friend_account);
+        for(auto s:this->chatBoxList){
+            if(s.first == account && s.second!=nullptr){
+                return;
+            }
+        }
+        chatbox *chat = new chatbox(userdata,udp_socket,tcp_socket,account,friend_account);
         chat->show();
+        this->chatBoxList.append(QPair<QString,chatbox*>(account,chat));
     });
     //设置联系人按钮的单击击事件
     connect(button,&friend_button::mousePress,this,[=](){
-        //qDebug()<<"按钮单击了";
+
     });
     return true;
 }
 
 //实现初始化已有联系人
 bool mainWidget::init_friend(user_data *userdata,QString account){
-    //qDebug()<<"调用联系人初始化函数";
     QList<QPair<QString,QString>> L_friend1 = userdata->get_friend(account,"好友");
     QList<QPair<QString,QString>> L_friend2 = userdata->get_friend(account,"朋友");
     QList<QPair<QString,QString>> L_friend3 = userdata->get_friend(account,"家人");
     for(auto l:L_friend1){
-        //qDebug()<<"username:"<<l.second<<"account"<<l.first;
         add_friend(userdata,account,l.first,0);
     }
     for(auto l:L_friend2){
@@ -256,7 +284,7 @@ bool mainWidget::add_chat(user_data *userdata,QString account , QString friend_a
     });
     //聊天按钮双击
     connect(button,&chat_button::mouseDoubleDlick,this,[=](){
-        chatbox *chat = new chatbox(userdata,udp_socket,account,friend_account);
+        chatbox *chat = new chatbox(userdata,udp_socket,tcp_socket,account,friend_account);
         chat->show();
     });
     //从会话列表移除
@@ -310,12 +338,22 @@ void mainWidget::mouseReleaseEvent(QMouseEvent* event){
     QWidget::mouseReleaseEvent(event);
 }
 
+//消失动画实现
+void mainWidget::animation_out(QWidget* target){
+    QPropertyAnimation * animation = new QPropertyAnimation(target , "geometry");
+    animation->setDuration(320);
+    animation->setStartValue(QRect(this->x(),this->y(),this->width(),this->height()));
+    animation->setEndValue(QRect(this->x(),this->y(),this->width(),0));
+    animation->setEasingCurve(QEasingCurve::InQuad);
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
 //实现边框阴影
 void mainWidget::paintEvent(QPaintEvent *e){
     QPainter painter(this);
-    QPixmap pixmap(":/res/background.png");
+    QPixmap pixmap(":/res/background2.png");
     qDrawBorderPixmap(&painter, this->rect(), QMargins(0, 0, 0, 0), pixmap);
-    QRect rect(this->rect().x()+8, this->rect().y()+12, this->rect().width()-16, this->rect().height()-30);
+    QRect rect(this->rect().x()+2, this->rect().y()+2, this->rect().width()-6, this->rect().height()-5);
     painter.fillRect(rect, QColor(255, 255, 255));
 }
 
@@ -324,7 +362,6 @@ bool mainWidget::eventFilter(QObject * watch,QEvent*event){
         QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(event);
         if (mouseEvent->button() == Qt::LeftButton)
         {
-            //qDebug() << "label_head 被点击了";
             emit changedHead();
             return true;
         }
@@ -334,6 +371,7 @@ bool mainWidget::eventFilter(QObject * watch,QEvent*event){
 
 mainWidget::~mainWidget()
 {
+    tcp_socket->tcp_disconnect();
     delete tcp_socket;
     delete udp_socket;
     delete ui;

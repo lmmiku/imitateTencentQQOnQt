@@ -2,11 +2,14 @@
 <ui version="4.0">
  <class>mainWidget</class>
  <widget class="QWidget" name="mainWidget">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>467</width>
+    <width>465</width>
     <height>808</height>
    </rect>
   </property>
@@ -76,8 +79,8 @@ QLineEdit#lineEdit_add{
 	border:none;	
 	font:200 15px ;
 }
-QTabBar::tab{height:40}
-QTabBar::tab{width:150}
+QTabBar::tab{height:30}
+QTabBar::tab{width:153.33333333333333333}
 QTabWidget#tabWidget QTabBar::tab{
 	font:200 17px;
 	color: rgb(171, 171, 171);
@@ -98,8 +101,8 @@ QTabWidget#tabWidget QTabBar::tab:selected{
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
-     <x>4</x>
-     <y>1</y>
+     <x>3</x>
+     <y>2</y>
      <width>461</width>
      <height>801</height>
     </rect>
@@ -122,10 +125,10 @@ QTabWidget#tabWidget QTabBar::tab:selected{
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>6</x>
-      <y>210</y>
-      <width>451</width>
-      <height>598</height>
+      <x>0</x>
+      <y>190</y>
+      <width>460</width>
+      <height>614</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -241,7 +244,7 @@ QTabWidget#tabWidget QTabBar::tab:selected{
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="movable">
      <bool>false</bool>
@@ -249,7 +252,7 @@ QTabWidget#tabWidget QTabBar::tab:selected{
     <widget class="QWidget" name="tab_1">
      <property name="minimumSize">
       <size>
-       <width>451</width>
+       <width>461</width>
        <height>0</height>
       </size>
      </property>
@@ -280,9 +283,15 @@ QTabWidget#tabWidget QTabBar::tab:selected{
       </property>
       <item>
        <widget class="QWidget" name="widget_7" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>460</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>451</width>
+          <width>460</width>
           <height>16777215</height>
          </size>
         </property>
@@ -293,7 +302,7 @@ QTabWidget#tabWidget QTabBar::tab:selected{
     <widget class="QWidget" name="tab_2">
      <property name="minimumSize">
       <size>
-       <width>451</width>
+       <width>460</width>
        <height>0</height>
       </size>
      </property>
@@ -311,8 +320,8 @@ QTabWidget#tabWidget QTabBar::tab:selected{
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>450</width>
-        <height>551</height>
+        <width>460</width>
+        <height>582</height>
        </rect>
       </property>
       <property name="palette">
@@ -406,8 +415,11 @@ QTabWidget#tabWidget QTabBar::tab:selected{
         </disabled>
        </palette>
       </property>
+      <property name="lineWidth">
+       <number>1</number>
+      </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="tabSpacing">
        <number>0</number>
@@ -417,8 +429,8 @@ QTabWidget#tabWidget QTabBar::tab:selected{
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>450</width>
-         <height>470</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <attribute name="label">
@@ -435,8 +447,8 @@ QTabWidget#tabWidget QTabBar::tab:selected{
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>83</width>
-         <height>32</height>
+         <width>460</width>
+         <height>513</height>
         </rect>
        </property>
        <attribute name="label">
@@ -453,8 +465,8 @@ QTabWidget#tabWidget QTabBar::tab:selected{
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>83</width>
-         <height>32</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <attribute name="label">
@@ -471,7 +483,7 @@ QTabWidget#tabWidget QTabBar::tab:selected{
     <widget class="QWidget" name="tab_3">
      <property name="minimumSize">
       <size>
-       <width>451</width>
+       <width>461</width>
        <height>0</height>
       </size>
      </property>
@@ -484,61 +496,15 @@ QTabWidget#tabWidget QTabBar::tab:selected{
      <attribute name="title">
       <string>群聊</string>
      </attribute>
-     <widget class="QToolBox" name="toolBox">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>70</y>
-        <width>311</width>
-        <height>241</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QToolBox#toolBox QTab{
-border:none;
-color:white;
-	background-color:rgba(0,0,0,0);
-}</string>
-      </property>
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <widget class="QWidget" name="page_4">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>311</width>
-         <height>173</height>
-        </rect>
-       </property>
-       <attribute name="label">
-        <string>Page 1</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="page_5">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>311</width>
-         <height>173</height>
-        </rect>
-       </property>
-       <attribute name="label">
-        <string>Page 2</string>
-       </attribute>
-      </widget>
-     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="widget_3" native="true">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>10</y>
-      <width>451</width>
-      <height>161</height>
+      <x>-1</x>
+      <y>-1</y>
+      <width>462</width>
+      <height>155</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -550,10 +516,10 @@ color:white;
     <widget class="QLabel" name="label_top">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>451</width>
-       <height>161</height>
+       <x>-1</x>
+       <y>-1</y>
+       <width>462</width>
+       <height>155</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -575,8 +541,8 @@ color:white;
     <widget class="QLabel" name="label_head">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>70</y>
+       <x>2</x>
+       <y>60</y>
        <width>81</width>
        <height>81</height>
       </rect>
@@ -614,7 +580,7 @@ color:white;
      <property name="geometry">
       <rect>
        <x>360</x>
-       <y>90</y>
+       <y>80</y>
        <width>71</width>
        <height>61</height>
       </rect>
@@ -633,7 +599,7 @@ color:white;
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>70</y>
+       <y>60</y>
        <width>211</width>
        <height>31</height>
       </rect>
@@ -646,7 +612,7 @@ color:white;
      <property name="geometry">
       <rect>
        <x>90</x>
-       <y>110</y>
+       <y>100</y>
        <width>311</width>
        <height>31</height>
       </rect>
@@ -659,7 +625,7 @@ color:white;
      <property name="geometry">
       <rect>
        <x>60</x>
-       <y>130</y>
+       <y>125</y>
        <width>21</width>
        <height>19</height>
       </rect>
@@ -671,7 +637,7 @@ color:white;
     <widget class="QPushButton" name="btn_more">
      <property name="geometry">
       <rect>
-       <x>330</x>
+       <x>340</x>
        <y>-1</y>
        <width>41</width>
        <height>41</height>
@@ -696,7 +662,7 @@ color:white;
     <widget class="QPushButton" name="btn_close">
      <property name="geometry">
       <rect>
-       <x>410</x>
+       <x>420</x>
        <y>0</y>
        <width>40</width>
        <height>40</height>
@@ -731,7 +697,7 @@ color:white;
     <widget class="QPushButton" name="btn_min">
      <property name="geometry">
       <rect>
-       <x>380</x>
+       <x>390</x>
        <y>6</y>
        <width>25</width>
        <height>25</height>
@@ -767,21 +733,21 @@ color:white;
    <widget class="QLineEdit" name="lineEdit_add">
     <property name="geometry">
      <rect>
-      <x>4</x>
-      <y>175</y>
-      <width>448</width>
-      <height>36</height>
+      <x>0</x>
+      <y>152</y>
+      <width>460</width>
+      <height>35</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>448</width>
+      <width>460</width>
       <height>30</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>448</width>
+      <width>460</width>
       <height>16777215</height>
      </size>
     </property>
@@ -793,7 +759,7 @@ color:white;
     <property name="geometry">
      <rect>
       <x>420</x>
-      <y>180</y>
+      <y>154</y>
       <width>30</width>
       <height>31</height>
      </rect>

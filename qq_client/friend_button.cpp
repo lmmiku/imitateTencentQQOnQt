@@ -14,8 +14,18 @@ friend_button::friend_button(QString Icon,QString username,QString signature):ui
 
     ui->button_Icon->setScaledContents(true);
     //ui->button->setStyleSheet("border: 2px solid lightgray;border-radius: 10px;");
+
     ui->button_Icon->setPixmap(QPixmap(Icon));
-    ui->button_Icon->setMask(QRegion(ui->button_Icon->rect(),QRegion::RegionType::Ellipse));
+    QBitmap mask(ui->button_Icon->size());
+    mask.fill(Qt::color0);
+    QPainter painter(&mask);
+    painter.setRenderHint(QPainter::Antialiasing, true);  // 启用抗锯齿
+    painter.setBrush(Qt::color1);
+    painter.setPen(Qt::NoPen);
+    painter.drawEllipse(mask.rect());
+    painter.end();
+    ui->button_Icon->setMask(mask);
+
     ui->button_username->setText(username);
     ui->button_signature->setText(signature);
     ui->button_signature->setStyleSheet("color:rgb(127,127,127)");
@@ -57,13 +67,11 @@ void friend_button::mousePressEvent(QMouseEvent*event){
 
 void friend_button::enterEvent(QEvent *event) {
     // 鼠标进入子控件范围时，将背景颜色设置为灰色
-    //qDebug()<<"进入friendButton的范围";
     this->setStyleSheet("border:none;background-color:rgb(235,235,235);border-radius: 10px;");
 }
 
 void friend_button::leaveEvent(QEvent *event) {
     // 鼠标离开子控件范围时，将背景颜色设置为白色
-    //qDebug()<<"离开friendButton的范围";
     this->setStyleSheet("border:none;background-color:white;border-radius: 10px;");
 }
 

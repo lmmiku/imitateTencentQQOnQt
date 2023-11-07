@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QMenu>
 #include <QFont>
+#include <QList>
+#include <QPair>
 #include <QFile>
 #include <QTimer>
 #include <QLabel>
@@ -12,6 +14,7 @@
 #include <QAction>
 #include <QPixmap>
 #include <QPainter>
+#include <QBitmap>
 #include <QToolBox>
 #include <QGroupBox>
 #include <QTabWidget>
@@ -21,7 +24,9 @@
 #include <QFileDialog>
 #include <QVBoxLayout>
 #include <qdrawutil.h>
+#include <qpropertyanimation.h>
 #include <QGraphicsEffect>
+#include <QGraphicsDropShadowEffect>
 
 #include "tcp.h"
 #include "user_data.h"
@@ -71,7 +76,11 @@ public:
     //初始化已有会话
     bool init_chat(user_data *userdata,QString account);
 
+    //消失动画
+    void animation_out(QWidget *target);
 
+    //存放消息界面
+    QList<QPair<QString,chatbox*>> chatBoxList;
 
     QVBoxLayout *layout;
 signals:
@@ -83,6 +92,8 @@ signals:
     void changedHead();
     //更新最后一条聊天记录
     void update_chatLastHistory();
+    //退出信号
+    void exitApplixation();
 private:
     Ui::mainWidget *ui;
 };

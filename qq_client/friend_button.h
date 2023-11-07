@@ -5,6 +5,8 @@
 #include <QMenu>
 #include <QEvent>
 #include <QMouseEvent>
+#include <QBitmap>
+#include <QPainter>
 #include <QDebug>
 
 namespace Ui {

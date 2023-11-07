@@ -29,7 +29,6 @@ bool user_data::add_username(QString account,QString username,QString password){
     }else{
         for(auto s:account){
             if(s<'0'||s>'9'){
-                //qDebug()<<"注册失败";
                 QErrorMessage *dialog2 = new QErrorMessage();
                 dialog2->setWindowTitle("注册失败");
                 dialog2->showMessage("请输入正确的账号！");
@@ -53,19 +52,15 @@ bool user_data::add_username(QString account,QString username,QString password){
         QMessageBox::information(NULL,"注册失败","数据库插入数据失败,点击ok继续注册",QMessageBox::Ok);
         return false;
     }
-    //qDebug()<<"注册成功"<<"用户名："<<username.toUtf8().data()<<"密码："<<password.toUtf8().data();
 }
 
 //遍历用户数据
 QList<QPair<QString,QString>> user_data::view_username(){
     QList<QPair<QString,QString>> List_account;
     QString s_view = QString("SELECT account,password FROM data");
-    //bool is_success = query.exec(s_view);
-    //qDebug()<<is_success;
     query.exec(s_view);
     while(query.next()){
         QPair<QString,QString> temp_pair;
-        //qDebug()<<"acount:"<<query.value("account").toString()<<"passowrd:"<<query.value("password").toString();
         temp_pair.first = query.value(0).toString();
         temp_pair.second = query.value(1).toString();
         List_account.append(temp_pair);
@@ -78,8 +73,6 @@ bool user_data::find_account(QString account){
     QString s_select = QString("SELECT * FROM data WHERE account='%1'").arg(account);
     query.exec(s_select);
     if(query.next()){
-//        QString str_account = query.value(0).toString();
-//        qDebug()<<str_account;
         return true;
     }else{
         return false;
@@ -114,7 +107,6 @@ bool user_data::change_username(QString account,QString newusername){
 //实现获取用户名
 QString user_data::get_username(QString account){
     QString s_select = QString("SELECT * FROM data WHERE account = '%1'").arg(account);
-    //qDebug()<<query.exec(s_select);
     query.exec(s_select);
     if(query.next()){
         return query.value(1).toString();
@@ -139,7 +131,6 @@ QList<QPair<QString,QString>> user_data::get_friend(QString account,QString type
         temp_pair.first = query.value(0).toString();
         temp_pair.second = query.value(1).toString();
         L.push_back(temp_pair);
-        //qDebug()<<"account:"<<temp_pair.first<<"username:"<<temp_pair.second;
     }
     return L;
 }
@@ -149,10 +140,8 @@ QString user_data::find_friend_account(QString account,QString friend_account){
     QString s_select = QString("SELECT friend_username FROM friend WHERE account = '%1' AND friend_account = '%2'").arg(account).arg(friend_account);
     query.exec(s_select);
     if(query.next()){
-        //qDebug()<<"查找成功";
         return query.value(0).toString();
     }else{
-        //qDebug()<<"查找失败";
         return "";
     }
 }
@@ -165,7 +154,7 @@ bool user_data::delete_friend(QString account,QString friend_account){
 
 //实现注销用户
 bool user_data::delete_user(QString account){
-    QString s_delete_friend = QString("delete from friend where account = '%1'").arg(account);
+    QString s_delete_friend = QString("delete from friend where (account = '%1' or friend_account = '%2')").arg(account).arg(account);//删除好友
     bool ret1 = query.exec(s_delete_friend);
     QString s_delete_user = QString("delete from data where account = '%1'").arg(account);
     bool ret2 = query.exec(s_delete_user);
@@ -194,7 +183,7 @@ bool user_data::updata_user(QString account,QString state){
     return query.exec(s_updata);
 }
 
-//获取联系人状态
+//获取用户状态
 QString user_data::getstate_user(QString account){
     QString s_select = QString("SELECT state FROM data WHERE account='%1'").arg(account);
     query.exec(s_select);
@@ -233,7 +222,6 @@ QString user_data::get_headPath(QString account){
     QString s_select = QString("SELECT head FROM data WHERE account='%1'").arg(account);
     query.exec(s_select);
     if(query.next()){
-        //qDebug()<<"---"<<query.value("head").toString()<<"----";
         return query.value(0).toString();
     }
     return "";
@@ -242,10 +230,8 @@ QString user_data::get_headPath(QString account){
 //获取最后一条聊天记录
 QString user_data::get_lastHistory(QString account,QString friend_account){
     QString s_select = QString("SELECT message FROM chat_history WHERE (sender_account = '%1' AND receiver_account = '%2') OR (sender_account = '%3' AND receiver_account = '%4') ORDER BY timestamp DESC LIMIT 1").arg(account).arg(friend_account).arg(friend_account).arg(account);
-    //qDebug()<<s_select;
     query.exec(s_select);
     if(query.next()){
-        //qDebug()<<"-----"<<query.value(0).toString()<<"-----";
         return query.value(0).toString();
     }
     //query.lastError().text();
@@ -271,10 +257,8 @@ bool user_data::is_existChat(QString account,QString friend_account){
     QString s_select = QString("SELECT * FROM chat WHERE account = '%1' AND friend_account = '%2'").arg(account).arg(friend_account);
     query.exec(s_select);
     if(query.next()){
-        qDebug()<<"聊天记录不存在";
         return true;
     }
-    qDebug()<<"聊天记录存在";
     return false;
 }
 

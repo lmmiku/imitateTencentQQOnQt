@@ -12,8 +12,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>435</width>
-    <height>360</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -89,7 +89,7 @@ QComboBox#comboBox_account,QLineEdit#password,QLineEdit#account{
 QComboBox#comboBox_account:hover,QLineEdit#password:hover,QLineEdit#account:hover{
 	border-bottom:1px solid rgb(193,193,193);
 }
-QComboBox#comboBox_account:focus,QLineEdit#password:focus,QLineEdit#account:focus{
+QLineEdit#password:focus,QLineEdit#account:focus{
 	border-bottom:1px solid rgb(18,183,245);
 }
 QComboBox#comboBox_account::drop-down{
@@ -98,7 +98,13 @@ QComboBox#comboBox_account::drop-down{
 }
 QComboBox#comboBox_account::drop-down:checked{
 	border-image: url(:/res/jietou_hover.png);
-}</string>
+}
+QComboBox#comboBox_account QAbstractItemView{
+	border:none;
+	background-color:white;
+	outline:0px;
+}
+</string>
   </property>
   <widget class="QWidget" name="widget_2" native="true">
    <property name="geometry">
@@ -331,7 +337,7 @@ QComboBox#comboBox_account::drop-down:checked{
     <widget class="QPushButton" name="btn_passwordview">
      <property name="geometry">
       <rect>
-       <x>360</x>
+       <x>365</x>
        <y>80</y>
        <width>21</width>
        <height>21</height>
@@ -345,6 +351,7 @@ QComboBox#comboBox_account::drop-down:checked{
        <normaloff>:/res/password1.png</normaloff>:/res/password1.png</iconset>
      </property>
     </widget>
+    <zorder>password</zorder>
     <zorder>comboBox_account</zorder>
     <zorder>btn_resiger</zorder>
     <zorder>btn_qrcode</zorder>
@@ -353,7 +360,6 @@ QComboBox#comboBox_account::drop-down:checked{
     <zorder>layoutWidget</zorder>
     <zorder>btn_passwordview</zorder>
     <zorder>account</zorder>
-    <zorder>password</zorder>
     <zorder>label_password</zorder>
    </widget>
    <widget class="QLabel" name="label_top">

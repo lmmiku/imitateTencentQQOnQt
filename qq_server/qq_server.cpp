@@ -16,5 +16,7 @@ int main(){
         UDP::instance()->starter();
     });
     
-    while(1){}
+    tcp_thread.join();
+    udp_thread.join();
+    return 0;
 }

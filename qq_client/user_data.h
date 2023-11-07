@@ -63,7 +63,7 @@ public:
     //更新用户状态
     bool updata_user(QString account,QString state);
 
-    //获取联系人状态
+    //获取用户状态
     QString getstate_user(QString account);
 
     //获取用户个性签名
